@@ -1,0 +1,132 @@
+.profile {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile__title {
+  align-self: center;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  margin: 74px 0 123px 0;
+}
+
+.profile__form {
+  display: flex;
+  flex-direction: column;
+  max-width: 410px;
+  width: 100%;
+  display: flex;
+  align-self: center;
+}
+
+.profile__container {
+  display: flex;
+  align-self: center;
+  max-width: 410px;
+  width: 100%;
+  justify-content: space-between;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  position: relative;
+}
+
+.profile__container:nth-of-type(3) {
+  margin-bottom: 131px;
+}
+
+.profile__data {
+  margin: 0;
+}
+
+.profile__border {
+  display: flex;
+  align-self: center;
+  border: #424242;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  max-width: 410px;
+  width: 100%;
+  margin: 16px 0 17px 0;
+}
+
+.profile__edit {
+  border: none;
+  background-color: transparent;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  color: #FFFFFF;
+  margin: 91px 0 0 0;
+  cursor: pointer;
+  max-width: 150px;
+  align-self: center;
+}
+
+.profile__exit {
+  border: none;
+  background-color: transparent;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+  color: #EE3465;
+  margin: 16px 0 0 0;
+  cursor: pointer;
+  max-width: 150px;
+  align-self: center;
+}
+
+.profile__hidden-input {
+  display: flex;
+  text-align: end;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  background-color: transparent;
+  border: none;
+  color: white;
+  padding: 0;
+  outline: 1px solid #424242;
+  border-radius: 3px;
+}
+
+.hide-element {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .profile__title {
+    margin: 236px 0 96px 0;
+  }
+
+  .profile__container:nth-of-type(3) {
+    margin-bottom: 121px;
+  }
+}
+
+@media screen and (max-width: 470px) {
+  .profile__title {
+    margin: 70px 0 80px 0;
+  }
+
+  .profile__border {
+    width: 260px;
+  }
+
+  .profile__container {
+    width: 260px;
+  }
+
+  .profile__form {
+    width: 260px;
+  }
+
+  .profile__edit {
+    margin-top: 180px;
+  }
+
+  .profile__container:nth-of-type(3) {
+    margin-bottom: 200px;
+  }
+}
