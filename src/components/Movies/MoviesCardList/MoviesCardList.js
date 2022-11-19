@@ -2,7 +2,7 @@ import React from "react";
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function MoviesCardList({movies, onClick, isMoreButtonVisible, onLikeClick}) {
+function MoviesCardList({movies, onClick, isMoreButtonVisible, onLikeClick, savedMovies}) {
 
   return (
     <section className="moviescard-list">
@@ -10,9 +10,10 @@ function MoviesCardList({movies, onClick, isMoreButtonVisible, onLikeClick}) {
         {movies.map((item) => {
             return (
               <MoviesCard
-                key={item.id}
+                key={item.id || item.movieId}
                 movie={item}
                 onLikeClick={onLikeClick}
+                savedMovies={savedMovies}
               />
             )
         })}

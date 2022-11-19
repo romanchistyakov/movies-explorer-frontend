@@ -5,7 +5,7 @@ import logo from '../../images/logo.svg';
 import useForm from "../../hooks/useForm";
 
 function Register({onRegister, errorMessage, resetError}) {
-  const {values, handleChange, errors, isValid, setValues, resetForm} = useForm({})
+  const {values, handleChange, errors, isValid} = useForm({})
 
   useEffect(() => {
     resetError();

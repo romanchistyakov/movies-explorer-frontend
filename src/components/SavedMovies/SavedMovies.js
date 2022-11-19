@@ -1,21 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
 import './SavedMovies.css';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import SearchForm from '../Movies/SearchForm/SearchForm';
 import MoviesCardList from "../Movies/MoviesCardList/MoviesCardList";
-import deleteIcon from '../../images/delete.svg';
 import useForm from "../../hooks/useForm";
 import Preloader from '../Movies/Preloader/Preloader';
 
-function SavedMovies({loggedIn, onLikeClick, searchError, isLoading, movies, findMovies, onClickMoreButton, isMoreButtonVisible, isShortFilmEnabled, onSwitchClick}) {
-  const {values, handleChange, setValues} = useForm({});
+function SavedMovies({
+  loggedIn,
+  onLikeClick,
+  searchError,
+  isLoading,
+  movies,
+  findSavedMovies,
+  isShortFilmSavedPageEnabled,
+  onSwitchClick,
+  resetSwitch}) {
+
+  const {values, handleChange} = useForm({});
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    findMovies(values.searchString);
+    findSavedMovies(values.searchString)
   }
+
+  useEffect(() => {
+    resetSwitch();
+  },[])
 
   return (
     <div className="saved-movies">
@@ -24,15 +37,14 @@ function SavedMovies({loggedIn, onLikeClick, searchError, isLoading, movies, fin
         onChange={handleChange}
         onSubmit={handleSubmit}
         values={values}
-        isShortFilmEnabled={isShortFilmEnabled}
+        isShortFilmEnabled={isShortFilmSavedPageEnabled}
         onSwitchClick={onSwitchClick}
       />
       {isLoading && <Preloader/>}
       {searchError && <p className="movies__error">{searchError}</p>}
       {!!movies.length && <MoviesCardList
         movies={movies}
-        onClick={onClickMoreButton}
-        isMoreButtonVisible={isMoreButtonVisible}
+        isMoreButtonVisible={false}
         onLikeClick={onLikeClick}
       >
       </MoviesCardList>}
