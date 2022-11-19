@@ -148,9 +148,9 @@ function App() {
         if(movies.length) {
           setSavedMovies(movies);
         }
-        return movies;
+        // return movies;
       })
-      .then(setSavedMoviesFiltered)
+      // .then(setSavedMoviesFiltered)
       .catch(console.log)
     }
   },[loggedIn])
@@ -243,7 +243,6 @@ function App() {
 
   function findMovies(searchString) {
     resizeMovieList()
-
     localStorage.setItem('searchString', searchString);
     localStorage.setItem('switchShort', isShortFilmEnabled);
     setSearchError('');
@@ -263,8 +262,8 @@ function App() {
       })
       .finally(() => setIsLoading(false))
     }
-    let filteredMovies = movies.filter(movie => movie.nameRU.toLowerCase().includes(searchString.toLowerCase()));
 
+    let filteredMovies = movies.filter(movie => movie.nameRU.toLowerCase().includes(searchString.toLowerCase()));
     if(filteredMovies.length) {
       filteredMovies = (isShortFilmEnabled ? filteredMovies.filter(movie => movie.duration <= 40) : filteredMovies);
       if (filteredMovies.length) {
@@ -277,18 +276,14 @@ function App() {
       setSearchError(errorType.notFound);
       setMoviesFiltered([]);
     }
-
     setIsLoading(false);
   }
 
   function findSavedMovies(searchString) {
     resizeMovieList()
-
     setSearchError('');
     setIsLoading(true);
-
     let filteredMovies = savedMovies.filter(movie => movie.nameRU.toLowerCase().includes(searchString.toLowerCase()));
-
     if(filteredMovies.length) {
       filteredMovies = (isShortFilmSavedPageEnabled ? filteredMovies.filter(movie => movie.duration <= 40) : filteredMovies);
       if(filteredMovies.length) {
@@ -305,17 +300,13 @@ function App() {
   }
 
   useEffect(() => {
-
     localStorage.setItem('moviesFiltered', JSON.stringify(moviesFiltered));
-
     setMoviesFilteredToList(moviesFiltered.slice(0, secondIndex));
-
     if(moviesFiltered.length && secondIndex < moviesFiltered.length) {
       setIsMoreButtonVisible(true)
     } else {
       setIsMoreButtonVisible(false)
     }
-
   }, [moviesFiltered, secondIndex])
 
   useEffect(() => {
@@ -326,47 +317,19 @@ function App() {
     setSavedMoviesFilteredToList(savedMovies);
   }, [savedMovies])
 
-  // function findSavedMovies(searchString) {
-  //   resizeMovieList();
-  //   setSearchError('');
-
-  //   const filteredMovies = savedMovies.filter(movie => movie.nameRU.toLowerCase().includes(searchString.toLowerCase()))
-
-  //   if(filteredMovies.length){
-  //     setSavedMoviesFiltered(filteredMovies);
-  //   } else {
-  //     setSavedMoviesFiltered([]);
-  //     setSearchError(errorType.notFound);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   setSearchError('');
-
-  //   const filteredMovies = (isShortFilmSavedPageEnabled ? savedMoviesFiltered.filter(movie => movie.duration <= 40) : savedMoviesFiltered);
-  //   console.log(filteredMovies)
-  //   if (filteredMovies.length) {
-  //     setSavedMoviesFilteredToList(filteredMovies);
-  //   } else {
-  //     setSavedMoviesFilteredToList([]);
-  //     setSearchError(errorType.notFound);
-  //   }
-  // }, [savedMoviesFiltered])
-
   function onSwitchClick() {
     setIsShortFilmEnabled(!isShortFilmEnabled);
   }
 
-  // function onSwitchSavedPageClick() {
-  //   setIsShortFilmSavedPageEnabled(!isShortFilmSavedPageEnabled)
-  // }
+  function onSwitchSavedPageClick() {
+    console.log(isShortFilmSavedPageEnabled)
+    setIsShortFilmSavedPageEnabled(!isShortFilmSavedPageEnabled)
+  }
 
   function resetSwitch() {
-      if (localStorage.getItem('switchShort')) {
-        setIsShortFilmEnabled(localStorage.getItem('switchShort') === 'true');
-      }
-      // onSwitchSavedPageClick(false);
-
+    if (localStorage.getItem('switchShort')) {
+      setIsShortFilmEnabled(localStorage.getItem('switchShort') === 'true');
+    }
   }
 
   return (
@@ -442,8 +405,8 @@ function App() {
             searchError={searchError}
             isLoading={isLoading}
             findSavedMovies={findSavedMovies}
-            isShortFilmEnabled={isShortFilmSavedPageEnabled}
-            // onSwitchClick={onSwitchSavedPageClick}
+            isShortFilmSavedPageEnabled={isShortFilmSavedPageEnabled}
+            onSwitchSavedPageClick={onSwitchSavedPageClick}
             resetSwitch={resetSwitch}
           /> : <Preloader/>}
 

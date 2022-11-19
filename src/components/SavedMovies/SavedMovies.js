@@ -15,7 +15,7 @@ function SavedMovies({
   movies,
   findSavedMovies,
   isShortFilmSavedPageEnabled,
-  onSwitchClick,
+  onSwitchSavedPageClick,
   resetSwitch}) {
 
   const {values, handleChange} = useForm({});
@@ -38,7 +38,7 @@ function SavedMovies({
         onSubmit={handleSubmit}
         values={values}
         isShortFilmEnabled={isShortFilmSavedPageEnabled}
-        onSwitchClick={onSwitchClick}
+        onSwitchClick={onSwitchSavedPageClick}
       />
       {isLoading && <Preloader/>}
       {searchError && <p className="movies__error">{searchError}</p>}
