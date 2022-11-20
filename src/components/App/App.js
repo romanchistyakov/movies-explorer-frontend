@@ -408,12 +408,12 @@ function App() {
             resetSwitch={resetSwitch}
           />
 
+          <Route path="*">
+            <PageNotFound/>
+          </Route>
+
         </Switch>
       </CurrentUserContext.Provider>
-
-      <Route path="*">
-        <PageNotFound/>
-      </Route>
     </div>
   );
 }
