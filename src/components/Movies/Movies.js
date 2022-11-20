@@ -22,7 +22,7 @@ function Movies({
     savedMovies
     })
     {
-  const {values, handleChange, setValues} = useForm({});
+      const {values, handleChange, errors, isValid, setValues} = useForm({})
 
   useEffect(() => {
     if (localStorage.getItem('searchString')) {
@@ -46,6 +46,8 @@ function Movies({
         values={values}
         isShortFilmEnabled={isShortFilmEnabled}
         onSwitchClick={onSwitchClick}
+        isValid={isValid}
+        errors={errors}
       />
       {isLoading && <Preloader/>}
       {searchError && <p className="movies__error">{searchError}</p>}

@@ -122,6 +122,7 @@ function App() {
       }
     })
     .then(() => setEditorOpen(false))
+    .then(setMessageError('Данные успешно изменены'))
     .catch((error) => {
       if(error.status === 409) {
         setMessageError('Пользователь с таким email уже существует');
@@ -148,9 +149,7 @@ function App() {
         if(movies.length) {
           setSavedMovies(movies);
         }
-        // return movies;
       })
-      // .then(setSavedMoviesFiltered)
       .catch(console.log)
     }
   },[loggedIn])

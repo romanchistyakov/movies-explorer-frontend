@@ -18,17 +18,16 @@ function SavedMovies({
   onSwitchSavedPageClick,
   resetSwitch}) {
 
-  const {values, handleChange} = useForm({});
+    const {values, handleChange, errors, isValid} = useForm({})
 
-  function handleSubmit(e) {
-    e.preventDefault();
+    function handleSubmit(e) {
+      e.preventDefault();
+      findSavedMovies(values.searchString)
+    }
 
-    findSavedMovies(values.searchString)
-  }
-
-  useEffect(() => {
-    resetSwitch();
-  },[])
+    useEffect(() => {
+      resetSwitch();
+    },[])
 
   return (
     <div className="saved-movies">
@@ -39,6 +38,8 @@ function SavedMovies({
         values={values}
         isShortFilmEnabled={isShortFilmSavedPageEnabled}
         onSwitchClick={onSwitchSavedPageClick}
+        isValid={isValid}
+        errors={errors}
       />
       {isLoading && <Preloader/>}
       {searchError && <p className="movies__error">{searchError}</p>}

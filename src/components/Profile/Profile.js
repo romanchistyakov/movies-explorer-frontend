@@ -68,7 +68,7 @@ function Profile({onExitClick, loggedIn, onEdit, errorMessage, resetError, onSav
           {!isValid && <span className="form__input-edit-error">{errors.email}</span>}
         </div>
 
-        {!!errorMessage && <span className="form__server-error">{errorMessage}</span>}
+        {!!errorMessage && <span className="profile__form-server-error">{errorMessage}</span>}
         <button type="submit" className={`form__button hover-button ${!isEditorOpen && "hide-element"}`} disabled={!isValid}>Сохранить</button>
 
       </form>

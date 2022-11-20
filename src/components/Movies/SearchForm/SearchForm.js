@@ -3,11 +3,11 @@ import './SearchForm.css';
 import switchOn from '../../../images/switch-on.svg';
 import switchOff from '../../../images/switch-off.svg';
 
-function SearchForm({onChange, onSubmit, values, isShortFilmEnabled, onSwitchClick}) {
+function SearchForm({onChange, onSubmit, values, isShortFilmEnabled, onSwitchClick, isValid, errors}) {
 
   return (
     <section className="search-form">
-      <form className="serch-form__form" onSubmit={onSubmit}>
+      <form className="serch-form__form" onSubmit={onSubmit} noValidate>
         <input
           autoComplete="off"
           type="text"
@@ -16,10 +16,12 @@ function SearchForm({onChange, onSubmit, values, isShortFilmEnabled, onSwitchCli
           className="search-form__input"
           placeholder="Фильм"
           required
+          minLength="1"
           value={values.searchString || ""}
           onChange={onChange}
         />
-        <button type="submit" className="search-form__button hover-button">Найти</button>
+        {!isValid && <span className="search-form__input-error">{errors.searchString}</span>}
+        <button type="submit" className="search-form__button hover-button" disabled={!isValid}>Найти</button>
       </form>
       <div className="search-form__container">
         <button className="search-from__switch-short" onClick={onSwitchClick}>
