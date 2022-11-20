@@ -5,7 +5,7 @@ import logo from '../../images/logo.svg'
 import profile from '../../images/profile.svg';
 import menu from '../../images/menu.svg'
 import cross from '../../images/cross.svg'
-import useOnClickOutside from '../../utils/useOnClickOutside';
+import useOnClickOutside from '../../hooks/useOnClickOutside';
 
 function Header({isMain, isLogged}) {
   const [isNavbarOpen, setIsNavbarOpen] = useState();
