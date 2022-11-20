@@ -17,7 +17,6 @@ import SavedMovies from '../SavedMovies/SavedMovies';
 import * as mainApi from '../../utils/MainApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import ProtectedRoute from '../ProtectedRoute';
-import Preloader from '../Movies/Preloader/Preloader';
 import {MOVIES_URL} from '../../utils/MoviesApi';
 import {getMoviesList} from '../../utils/MoviesApi';
 
@@ -366,7 +365,7 @@ function App() {
             <Footer/>
           </Route>
 
-          {loggedIn ? <ProtectedRoute
+          <ProtectedRoute
             exact path="/profile"
             loggedIn={loggedIn}
             component={Profile}
@@ -376,9 +375,9 @@ function App() {
             resetError={resetError}
             onSave={handleEditor}
             isEditorOpen={editorOpen}
-          /> : <Preloader/>}
+          />
 
-          {loggedIn ? <ProtectedRoute
+          <ProtectedRoute
             exact path="/movies"
             loggedIn={loggedIn}
             component={Movies}
@@ -393,9 +392,9 @@ function App() {
             onSwitchClick={onSwitchClick}
             resetSwitch={resetSwitch}
             savedMovies={savedMovies}
-          /> : <Preloader/>}
+          />
 
-          {loggedIn ? <ProtectedRoute
+          <ProtectedRoute
             exact path="/saved-movies"
             loggedIn={loggedIn}
             component={SavedMovies}
@@ -407,15 +406,14 @@ function App() {
             isShortFilmSavedPageEnabled={isShortFilmSavedPageEnabled}
             onSwitchSavedPageClick={onSwitchSavedPageClick}
             resetSwitch={resetSwitch}
-          /> : <Preloader/>}
-
-          <Route path="*">
-            <PageNotFound/>
-          </Route>
+          />
 
         </Switch>
-
       </CurrentUserContext.Provider>
+
+      <Route path="*">
+        <PageNotFound/>
+      </Route>
     </div>
   );
 }
