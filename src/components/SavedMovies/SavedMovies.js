@@ -16,7 +16,7 @@ function SavedMovies({
   findSavedMovies,
   isShortFilmSavedPageEnabled,
   onSwitchSavedPageClick,
-  resetSwitch}) {
+  resetSwitchOnSavedMovies}) {
 
     const {values, handleChange, errors, isValid} = useForm({})
 
@@ -26,7 +26,7 @@ function SavedMovies({
     }
 
     useEffect(() => {
-      resetSwitch();
+      resetSwitchOnSavedMovies();
     },[])
 
   return (

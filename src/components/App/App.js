@@ -25,12 +25,12 @@ function App() {
   const ref = useRef();
   const location = useLocation();
   const [messageError, setMessageError] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState();
   const [currentUser, setCurrentUser] = useState({})
   const [editorOpen, setEditorOpen] = useState(false);
-  const [movies, setMovies] = useState(() => {
-    if (localStorage.getItem('movies')) {
-      return JSON.parse(localStorage.getItem('movies'));
+  const [moviesFilteredAll, setMoviesFilteredAll] = useState(() => {
+    if (localStorage.getItem('moviesFilteredAll')) {
+      return JSON.parse(localStorage.getItem('moviesFilteredAll'));
     } else {return []}
   });
   const [moviesFiltered, setMoviesFiltered] = useState(() => {
@@ -50,9 +50,26 @@ function App() {
   const [isShortFilmEnabled, setIsShortFilmEnabled] = useState(false);
   const [isShortFilmSavedPageEnabled, setIsShortFilmSavedPageEnabled] = useState(false);
   const errorType = {
+    searchFormIsEmpty: "Нужно ввести ключевое слово",
     notFound : "Ничего не найдено",
     error : "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"
   }
+
+  const [dimensions, setDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  const handleResize = () => {
+    setDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  }
+
+  useEffect(() => {
+    resizeMovieList();
+  },[dimensions])
 
   useEffect(() => {
     setSearchError('');
@@ -169,19 +186,36 @@ function App() {
         }
       })
       .catch(console.log)
+    } else {
+      setLoggedIn(false);
     }
   }
 
   useEffect(() => {
+
+    window.addEventListener("resize", handleResize, false);
+
     tokenCheck();
+
     if (localStorage.getItem('switchShort')) {
       setIsShortFilmEnabled(localStorage.getItem('switchShort') === 'true');
     }
+
     resizeMovieList();
   },[])
 
   function tokenDelete() {
     localStorage.removeItem('token');
+    localStorage.removeItem('searchString');
+    localStorage.removeItem('switchShort');
+    localStorage.removeItem('moviesFiltered');
+    localStorage.removeItem('moviesFilteredAll');
+    setMoviesFiltered([]);
+    setMoviesFilteredAll([]);
+    setIsShortFilmEnabled([]);
+    setSavedMoviesFiltered([]);
+    setSavedMoviesFilteredToList([]);
+    setIsShortFilmEnabled(false);
     setLoggedIn(false);
     history.push('./');
   }
@@ -206,7 +240,12 @@ function App() {
       .then((newMovie) => {
         setSavedMovies([newMovie, ...savedMovies]);
       })
-      .catch(console.log)
+      .catch((error) => {
+        console.log(error)
+        if(error.statusCode === 401) {
+          tokenDelete();
+        }
+      })
     } else {
       let savedElement = ''
       if (movie._id) {
@@ -218,7 +257,12 @@ function App() {
       .then(() => {
         setSavedMovies((state) => state.filter(c => c._id !== savedElement._id))
       })
-      .catch(console.log)
+      .catch((error) => {
+        console.log(error)
+        if(error.statusCode === 401) {
+          tokenDelete();
+        }
+      })
     }
   }
 
@@ -241,43 +285,57 @@ function App() {
 
   function findMovies(searchString) {
     resizeMovieList()
+    setSearchError('');
+    setMoviesFiltered([]);
+    setMoviesFilteredToList([]);
+
+    if(!searchString) {
+      setSearchError(errorType.searchFormIsEmpty);
+      setMoviesFiltered([]);
+      setMoviesFilteredToList([]);
+      return;
+    }
+
     localStorage.setItem('searchString', searchString);
     localStorage.setItem('switchShort', isShortFilmEnabled);
-    setSearchError('');
+
     setIsLoading(true);
 
-    if(!movies.length) {
-      getMoviesList()
-      .then((movies) => {
-        if (movies.length) {
-          setMovies(movies);
-          localStorage.setItem('movies', JSON.stringify(movies));
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setSearchError(errorType.error);
-      })
-      .finally(() => setIsLoading(false))
-    }
-
-    let filteredMovies = movies.filter(movie => movie.nameRU.toLowerCase().includes(searchString.toLowerCase()));
-    if(filteredMovies.length) {
-      filteredMovies = (isShortFilmEnabled ? filteredMovies.filter(movie => movie.duration <= 40) : filteredMovies);
-      if (filteredMovies.length) {
-        setMoviesFiltered(filteredMovies);
+    getMoviesList()
+    .then((movies) => {
+      if (movies) {
+        return movies.filter(movie => movie.nameRU.toLowerCase().includes(searchString.toLowerCase()));
       } else {
-        setSearchError(errorType.notFound);
-        setMoviesFiltered([]);
+        throw new Error(errorType.error)
       }
-    } else {
-      setSearchError(errorType.notFound);
-      setMoviesFiltered([]);
-    }
-    setIsLoading(false);
+    })
+    .then((movies) => {
+      if (movies.length) {
+        setMoviesFilteredAll(movies);
+        localStorage.setItem('moviesFilteredAll', JSON.stringify(movies))
+        return (isShortFilmEnabled ? movies.filter(movie => movie.duration <= 40) : movies);
+      } else {
+        throw new Error(errorType.notFound)
+      }
+    })
+    .then((movies) => {
+      if (movies.length) {
+        setMoviesFiltered(movies);
+      } else {
+        throw new Error(errorType.notFound)
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      setSearchError(error.message);
+    })
+    .finally(() => setIsLoading(false))
   }
 
   function findSavedMovies(searchString) {
+    if(!searchString) {
+      return;
+    }
     resizeMovieList()
     setSearchError('');
     setIsLoading(true);
@@ -319,16 +377,27 @@ function App() {
     setIsShortFilmEnabled(!isShortFilmEnabled);
   }
 
+  useEffect(() => {
+    if (isShortFilmEnabled) {
+      setMoviesFiltered(moviesFilteredAll.filter(movie => movie.duration <= 40));
+    } else {
+      setMoviesFiltered(moviesFilteredAll);
+    }
+    resizeMovieList()
+  },[isShortFilmEnabled])
+
   function onSwitchSavedPageClick() {
-    console.log(isShortFilmSavedPageEnabled)
     setIsShortFilmSavedPageEnabled(!isShortFilmSavedPageEnabled)
   }
 
-  function resetSwitch() {
-    if (localStorage.getItem('switchShort')) {
-      setIsShortFilmEnabled(localStorage.getItem('switchShort') === 'true');
-    }
+  function resetSwitchOnSavedMovies() {
+    setIsShortFilmSavedPageEnabled(false)
   }
+
+  useEffect(() => {
+    setSavedMoviesFiltered(isShortFilmSavedPageEnabled ? savedMovies.filter(movie => movie.duration <= 40) : savedMovies)
+    resizeMovieList()
+  },[isShortFilmSavedPageEnabled])
 
   return (
     <div className="app">
@@ -390,7 +459,6 @@ function App() {
             isMoreButtonVisible={isMoreButtonVisible}
             isShortFilmEnabled={isShortFilmEnabled}
             onSwitchClick={onSwitchClick}
-            resetSwitch={resetSwitch}
             savedMovies={savedMovies}
           />
 
@@ -405,7 +473,7 @@ function App() {
             findSavedMovies={findSavedMovies}
             isShortFilmSavedPageEnabled={isShortFilmSavedPageEnabled}
             onSwitchSavedPageClick={onSwitchSavedPageClick}
-            resetSwitch={resetSwitch}
+            resetSwitchOnSavedMovies={resetSwitchOnSavedMovies}
           />
 
           <Route path="*">

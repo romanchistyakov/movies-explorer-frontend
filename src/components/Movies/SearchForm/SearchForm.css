@@ -49,12 +49,6 @@
   cursor: pointer;
 }
 
-.search-form__button:disabled {
-  background-color: #F8F8F8;
-  color: #C2C2C2;
-  cursor: auto;
-}
-
 .search-from__switch-short {
   background: transparent;
   border: none;

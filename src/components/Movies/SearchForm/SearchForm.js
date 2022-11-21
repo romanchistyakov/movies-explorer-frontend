@@ -21,7 +21,7 @@ function SearchForm({onChange, onSubmit, values, isShortFilmEnabled, onSwitchCli
           onChange={onChange}
         />
         {!isValid && <span className="search-form__input-error">{errors.searchString}</span>}
-        <button type="submit" className="search-form__button hover-button" disabled={!isValid}>Найти</button>
+        <button type="submit" className="search-form__button hover-button">Найти</button>
       </form>
       <div className="search-form__container">
         <button className="search-from__switch-short" onClick={onSwitchClick}>

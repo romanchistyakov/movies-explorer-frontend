@@ -6,7 +6,7 @@ import logo from '../../images/logo.svg';
 import useForm from "../../hooks/useForm";
 
 function Login({onLogin, errorMessage, resetError}) {
-  const {values, handleChange, errors, isValid, setValues, resetForm} = useForm({});
+  const {values, handleChange, errors, isValid} = useForm({});
 
 
   useEffect(() => {
@@ -36,6 +36,8 @@ function Login({onLogin, errorMessage, resetError}) {
             required
             onChange={handleChange}
             value={values.email || ""}
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}"
+            title="Формат почты: example@example.com"
           />
           {!isValid && <span className="form__input-error">{errors.email}</span>}
         </div>
@@ -54,7 +56,7 @@ function Login({onLogin, errorMessage, resetError}) {
           {!isValid && <span className="form__input-error">{errors.password}</span>}
         </div>
         {!!errorMessage && <span className="form__server-error">{errorMessage}</span>}
-        <button type="submit" className="form__button form__button_login hover-button">Войти</button>
+        <button type="submit" className="form__button form__button_login hover-button" disabled={!isValid}>Войти</button>
         <div className="form__comment">
             Ещё не зарегистрированы?&nbsp;<Link to="/signup" className="form__link hover-link">Регистрация</Link>
         </div>

@@ -1,0 +1,62 @@
+[33mcommit 88055e1809a04e8862e09d501dde70fd6f16b522[m[33m ([m[1;36mHEAD -> [m[1;32mlevel-3[m[33m, [m[1;31morigin/level-3[m[33m)[m
+Author: Роман Чистяков <roman.chistiakov@gmail.com>
+Date:   Sun Nov 20 03:11:09 2022 +0200
+
+    level-3 fix 7
+
+[33mcommit 29209ed13713c54ef54e0fd348c4f3e2701032ea[m
+Author: Роман Чистяков <roman.chistiakov@gmail.com>
+Date:   Sun Nov 20 03:05:52 2022 +0200
+
+    level-3 fix 6
+
+[33mcommit 4c5ad1ab2b05c7c82b3bccd0dd1f526e090ab87b[m
+Author: Роман Чистяков <roman.chistiakov@gmail.com>
+Date:   Sun Nov 20 03:00:30 2022 +0200
+
+    level-3 fix 5
+
+[33mcommit b53b68c9ab00341d614036c1ce9471a9575d65aa[m
+Author: Роман Чистяков <roman.chistiakov@gmail.com>
+Date:   Sun Nov 20 02:37:44 2022 +0200
+
+    level-3 fix 4
+
+[33mcommit d5b758361940480a461186f7449327f5ac02379e[m
+Author: Роман Чистяков <roman.chistiakov@gmail.com>
+Date:   Sun Nov 20 01:13:59 2022 +0200
+
+    level-3 fix 3
+
+[33mcommit 2f508e460ec4e0f56f9c8125bfffad2c3d8f7470[m
+Author: Роман Чистяков <roman.chistiakov@gmail.com>
+Date:   Sun Nov 20 00:46:20 2022 +0200
+
+    level-3 fix 2
+
+[33mcommit b76d18e84f25d227bf55c20b386692c784db29ff[m
+Author: Роман Чистяков <roman.chistiakov@gmail.com>
+Date:   Sat Nov 19 13:07:59 2022 +0200
+
+    level-3 fix 1
+
+[33mcommit 680cff9ce99cfb7dba6c0c191dbdaa04b1b0ae3a[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m
+Merge: 036c3b0 9e600cf
+Author: Roman Chistyakov <97839627+romanchistyakov@users.noreply.github.com>
+Date:   Thu Nov 17 01:30:11 2022 +0200
+
+    Merge pull request #1 from romanchistyakov/level-2
+    
+    diploma frontend
+
+[33mcommit 9e600cf97c8185f56c27d93796930cfbd6ae0a10[m[33m ([m[1;31morigin/level-2[m[33m, [m[1;32mlevel-2[m[33m)[m
+Author: Роман Чистяков <roman.chistiakov@gmail.com>
+Date:   Sun Nov 13 00:09:16 2022 +0200
+
+    diploma frontend
+
+[33mcommit 036c3b06ecf76d588a73701d3a980578a5dfa87d[m
+Author: Роман Чистяков <roman.chistiakov@gmail.com>
+Date:   Thu Oct 27 23:12:51 2022 +0200
+
+    initial commit

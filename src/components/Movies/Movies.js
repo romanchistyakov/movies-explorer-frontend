@@ -18,7 +18,6 @@ function Movies({
     isMoreButtonVisible,
     isShortFilmEnabled,
     onSwitchClick,
-    resetSwitch,
     savedMovies
     })
     {
@@ -28,7 +27,6 @@ function Movies({
     if (localStorage.getItem('searchString')) {
       setValues({searchString: localStorage.getItem('searchString')});
     }
-    resetSwitch();
   }, [])
 
   function handleSubmit(e) {

@@ -37,6 +37,7 @@ function Register({onRegister, errorMessage, resetError}) {
             onChange={handleChange}
             value={values.name || ""}
             pattern="[A-Za-zА-ЯЁа-яё -]+"
+            title="Имя может содержать только латиницу, кириллицу, пробел или дефис, от 2 до 30 символов"
           />
           {!isValid && <span className="form__input-error">{errors.name}</span>}
         </div>
@@ -44,13 +45,15 @@ function Register({onRegister, errorMessage, resetError}) {
           <h2 className="form__subtitle">E-mail</h2>
           <input
             autoComplete="off"
-            type="email"
+            type="text"
             name="email"
             id="input-email-register"
             className="form__input"
             required
             onChange={handleChange}
             value={values.email || ""}
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}"
+            title="Формат почты: example@example.com"
           />
           {!isValid && <span className="form__input-error">{errors.email}</span>}
         </div>

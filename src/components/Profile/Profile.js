@@ -5,8 +5,9 @@ import useForm from '../../hooks/useForm'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function Profile({onExitClick, loggedIn, onEdit, errorMessage, resetError, onSave, isEditorOpen}) {
-  const {values, handleChange, errors, isValid, setValues, resetForm} = useForm({});
+  const {values, handleChange, errors, isValid, setValues} = useForm({});
   const currentUser = useContext(CurrentUserContext);
+  const isNotEdited = (currentUser.name === values.name && currentUser.email === values.email)
 
   useEffect(() => {
     resetError();
@@ -45,6 +46,7 @@ function Profile({onExitClick, loggedIn, onEdit, errorMessage, resetError, onSav
             value={values.name || ""}
             onChange={handleChange}
             pattern="[A-Za-zА-ЯЁа-яё -]+"
+            title="Имя может содержать только латиницу, кириллицу, пробел или дефис, от 2 до 30 символов"
           />
           {!isValid && <span className="form__input-edit-error">{errors.name}</span>}
         </div>
@@ -56,7 +58,7 @@ function Profile({onExitClick, loggedIn, onEdit, errorMessage, resetError, onSav
           <p className={`profile__data ${isEditorOpen && "hide-element"}`}>{`${values.email || currentUser.email}`}</p>
           <input
             autoComplete="off"
-            type="email"
+            type="text"
             name="email"
             id="input-email"
             className={`profile__hidden-input ${!isEditorOpen && "hide-element"}`}
@@ -64,13 +66,14 @@ function Profile({onExitClick, loggedIn, onEdit, errorMessage, resetError, onSav
             maxLength="30"
             value={values.email || ""}
             onChange={handleChange}
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}"
+            title="Формат почты: example@example.com"
           />
           {!isValid && <span className="form__input-edit-error">{errors.email}</span>}
         </div>
 
         {!!errorMessage && <span className="profile__form-server-error">{errorMessage}</span>}
-        <button type="submit" className={`form__button hover-button ${!isEditorOpen && "hide-element"}`} disabled={!isValid}>Сохранить</button>
-
+        <button type="submit" className={`form__button hover-button ${!isEditorOpen && "hide-element"}`} disabled={!isValid || isNotEdited}>Сохранить</button>
       </form>
 
       <button className={`profile__edit hover-link ${isEditorOpen && "hide-element"}`} onClick={onSave}>Редактировать</button>
