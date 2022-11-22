@@ -190,7 +190,10 @@ function App() {
           history.push('/movies');
         }
       })
-      .catch(console.log)
+      .catch((error) => {
+        console.log(error);
+        tokenDelete();
+      })
     } else {
       setLoggedIn(false);
     }
