@@ -28,6 +28,11 @@ function App() {
   const [loggedIn, setLoggedIn] = useState();
   const [currentUser, setCurrentUser] = useState({})
   const [editorOpen, setEditorOpen] = useState(false);
+  const [movies, setMovies] = useState(() => {
+    if (localStorage.getItem('movies')) {
+      return JSON.parse(localStorage.getItem('movies'));
+    } else {return []}
+  });
   const [moviesFilteredAll, setMoviesFilteredAll] = useState(() => {
     if (localStorage.getItem('moviesFilteredAll')) {
       return JSON.parse(localStorage.getItem('moviesFilteredAll'));
@@ -206,10 +211,12 @@ function App() {
 
   function tokenDelete() {
     localStorage.removeItem('token');
+    localStorage.removeItem('movies');
     localStorage.removeItem('searchString');
     localStorage.removeItem('switchShort');
     localStorage.removeItem('moviesFiltered');
     localStorage.removeItem('moviesFilteredAll');
+    setMovies([]);
     setMoviesFiltered([]);
     setMoviesFilteredAll([]);
     setIsShortFilmEnabled([]);
@@ -301,35 +308,54 @@ function App() {
 
     setIsLoading(true);
 
-    getMoviesList()
-    .then((movies) => {
-      if (movies) {
-        return movies.filter(movie => movie.nameRU.toLowerCase().includes(searchString.toLowerCase()));
+    if (!movies.length) {
+      getMoviesList()
+      .then((moviesFromServer) => {
+        if (moviesFromServer) {
+          setMovies(moviesFromServer);
+          localStorage.setItem('movies', JSON.stringify(moviesFromServer));
+          return moviesFromServer.filter(movie => movie.nameRU.toLowerCase().includes(searchString.toLowerCase()));
+        } else {
+          throw new Error(errorType.error)
+        }
+      })
+      .then((moviesFromServer) => {
+        if (moviesFromServer.length) {
+          setMoviesFilteredAll(moviesFromServer);
+          localStorage.setItem('moviesFilteredAll', JSON.stringify(moviesFromServer))
+          return (isShortFilmEnabled ? moviesFromServer.filter(movie => movie.duration <= 40) : moviesFromServer);
+        } else {
+          throw new Error(errorType.notFound)
+        }
+      })
+      .then((moviesFromServer) => {
+        if (moviesFromServer.length) {
+          setMoviesFiltered(moviesFromServer);
+        } else {
+          throw new Error(errorType.notFound)
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setSearchError(error.message);
+      })
+      .finally(() => setIsLoading(false))
+    } else {
+      let filteredMovies = movies.filter(movie => movie.nameRU.toLowerCase().includes(searchString.toLowerCase()));
+      if (filteredMovies.length) {
+        setMoviesFilteredAll(filteredMovies);
+        localStorage.setItem('moviesFilteredAll', JSON.stringify(filteredMovies));
+        filteredMovies = (isShortFilmEnabled ? filteredMovies.filter(movie => movie.duration <= 40) : filteredMovies);
+        if (filteredMovies.length) {
+          setMoviesFiltered(filteredMovies);
+        } else {
+          setSearchError(errorType.notFound);
+        }
       } else {
-        throw new Error(errorType.error)
+        setSearchError(errorType.notFound);
       }
-    })
-    .then((movies) => {
-      if (movies.length) {
-        setMoviesFilteredAll(movies);
-        localStorage.setItem('moviesFilteredAll', JSON.stringify(movies))
-        return (isShortFilmEnabled ? movies.filter(movie => movie.duration <= 40) : movies);
-      } else {
-        throw new Error(errorType.notFound)
-      }
-    })
-    .then((movies) => {
-      if (movies.length) {
-        setMoviesFiltered(movies);
-      } else {
-        throw new Error(errorType.notFound)
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      setSearchError(error.message);
-    })
-    .finally(() => setIsLoading(false))
+      setIsLoading(false);
+    }
   }
 
   function findSavedMovies(searchString) {
