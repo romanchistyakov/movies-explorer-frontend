@@ -1,13 +1,13 @@
 import {React, useRef, useState, useEffect} from 'react';
-import {Route, Switch, Link, NavLink } from 'react-router-dom';
+import {Route, Link, NavLink } from 'react-router-dom';
 import './Header.css'
 import logo from '../../images/logo.svg'
 import profile from '../../images/profile.svg';
 import menu from '../../images/menu.svg'
 import cross from '../../images/cross.svg'
-import useOnClickOutside from '../../utils/useOnClickOutside';
+import useOnClickOutside from '../../hooks/useOnClickOutside';
 
-function Header({isMain}) {
+function Header({isMain, isLogged}) {
   const [isNavbarOpen, setIsNavbarOpen] = useState();
   const ref = useRef();
 
@@ -41,28 +41,28 @@ function Header({isMain}) {
       <Link to="/" className="header__logo hover-link">
         <img src={logo} alt="Иконка"/>
       </Link>
-      <Switch>
-        <Route exact path={["/profile", "/movies", "/saved-movies"]}>
-          <div className='header__container'>
-            <NavLink to="/movies" className="header__movies hover-link" activeClassName="current-page">Фильмы</NavLink>
-            <NavLink to="/saved-movies" className="header__saved hover-link" activeClassName="current-page">Сохранённые фильмы</NavLink>
-          </div>
-          <div className='header__container'>
-            <Link to="/profile" className="header__profile hover-link">Аккаунт</Link>
-            <Link to="/profile" className="header__icon hover-link">
-              <img src={profile} alt="Иконка профиля"/>
-            </Link>
-          </div>
-          <button className="header__vertical-menu-button hover-button" onClick={handleNavbar}>
-            <img src={menu} alt="Иконка"/>
-          </button>
-        </Route>
 
-        <Route exact path="/">
-          <Link to="/signup" className="header__link hover-link">Регистрация</Link>
-          <Link to="/signin" className="header__link hover-button"><button className="header__button">Войти</button></Link>
-        </Route>
-      </Switch>
+      {isLogged && <Route>
+        <div className='header__container'>
+          <NavLink to="/movies" className="header__movies hover-link" activeClassName="current-page">Фильмы</NavLink>
+          <NavLink to="/saved-movies" className="header__saved hover-link" activeClassName="current-page">Сохранённые фильмы</NavLink>
+        </div>
+        <div className='header__container'>
+          <Link to="/profile" className="header__profile hover-link">Аккаунт</Link>
+          <Link to="/profile" className="header__icon hover-link">
+            <img src={profile} alt="Иконка профиля"/>
+          </Link>
+        </div>
+        <button className="header__vertical-menu-button hover-button" onClick={handleNavbar}>
+          <img src={menu} alt="Иконка"/>
+        </button>
+      </Route>}
+
+      {!isLogged && <Route>
+        <Link to="/signup" className="header__link hover-link">Регистрация</Link>
+        <Link to="/signin" className="header__link hover-button"><button className="header__button">Войти</button></Link>
+      </Route>}
+
 
       <div className={`header__navbar-popup ${isNavbarOpen && "header__navbar_opened"}`}>
         <div className="header__navbar" ref={ref}>

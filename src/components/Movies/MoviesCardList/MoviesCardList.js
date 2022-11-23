@@ -2,21 +2,23 @@ import React from "react";
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function MoviesCardList({movies, children}) {
+function MoviesCardList({movies, onClick, isMoreButtonVisible, onLikeClick, savedMovies}) {
+
   return (
     <section className="moviescard-list">
       <ul className="moviescard-list__grid">
         {movies.map((item) => {
-          return (
-            <MoviesCard
-              key={item._id}
-              movie={item}
-              children={children}
-            />
-          )
+            return (
+              <MoviesCard
+                key={item.id || item.movieId}
+                movie={item}
+                onLikeClick={onLikeClick}
+                savedMovies={savedMovies}
+              />
+            )
         })}
       </ul>
-      <button className="moviescard-list__button hover-button">Ещё</button>
+      {isMoreButtonVisible && <button className="moviescard-list__button hover-button" onClick={onClick}>Ещё</button>}
     </section>
   )
 }
