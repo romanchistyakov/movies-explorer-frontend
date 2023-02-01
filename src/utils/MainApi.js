@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://api.mymovie.nomoredomains.icu';
+export const BASE_URL = 'http://localhost:3001';
 
 const _fetchRoutine = (res) => {
     if(res.ok) {
