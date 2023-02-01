@@ -10,7 +10,7 @@ function AboutMe() {
       <div className="about-me__grid">
         <div className="about-me__container">
           <p className="about-me__name">Роман</p>
-          <p className="about-me__profession">Фронтенд-разработчик, 39 лет</p>
+          <p className="about-me__profession">Фронтенд-разработчик</p>
           <p className="about-me__story">
             Я родился и живу в Калининграде, закончил факультет судостроения и энергетики КГТУ.
             Проработал по прошлой специальности более 10 лет.
