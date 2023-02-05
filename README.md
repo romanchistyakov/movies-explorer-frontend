@@ -10,6 +10,10 @@
 
 - https://disk.yandex.ru/d/2uLGQ70swFzt2g
 
+## Демо проекта
+- Адрес демо проекта https://movies-explorer.onrender.com
+- Бэкенд и фронтенд задеплоены на [render.com](https://render.com), база данных MongoDB на [railway.com](https://railway.app)
+
 ## Развёртывание проекта
 ### `backend`
 - Необходимые версии `Node.js` - v16.15.1, `MongoDB` - 4.4.16
